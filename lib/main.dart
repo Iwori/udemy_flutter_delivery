@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:udemy_flutter_delivery/src/pages/login_page.dart';
+import 'package:udemy_flutter_delivery/src/presentation/pages/login/login_page.dart';
 
 void main() {
   runApp(const MyApp());

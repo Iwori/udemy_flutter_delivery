@@ -35,6 +35,10 @@ instrucciones.txt
 /build/
 /coverage/
 
+# Ignorar la carpeta img
+img_ref/
+
+
 # Symbolication related
 app.*.symbols
 
