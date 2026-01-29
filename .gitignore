@@ -12,6 +12,7 @@
 .swiftpm/
 migrate_working_dir/
 GEMINI.md
+instrucciones.txt
 
 # IntelliJ related
 *.iml
