@@ -1,3 +1,11 @@
+<div align="center">
+  <h1>🚧 PROYECTO EN DESARROLLO 🚧</h1>
+  <p>
+    <strong>⚠️ Atención:</strong> El código actual está incompleto y sujeto a cambios constantes.
+  </p>
+</div>
+<br>
+
 # 🛵 Delivery App - Flutter & NodeJS
 
 Este repositorio contiene el código fuente de una aplicación de Delivery completa y escalable, desarrollada como parte del curso **"Flutter: App Delivery con NodeJS, MySQL y Pasarelas de pago"**.
