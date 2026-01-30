@@ -15,11 +15,20 @@ class MyApp extends StatelessWidget {
       title: 'Delivery Udemy',
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
-      getPages: [
-        GetPage(name: '/', page: () => const LoginPage()),
-      ],
+      getPages: [GetPage(name: '/', page: () => const LoginPage())],
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.amber,
+        colorScheme: const ColorScheme(
+          primary: Colors.amber,
+          secondary: Colors.amberAccent,
+          brightness: Brightness.light,
+          surface: Colors.white,
+          onSurface: Colors.grey,
+          onPrimary: Colors.grey,
+          error: Colors.grey,
+          onError: Colors.grey,
+          onSecondary: Colors.grey,
+        ),
       ),
     );
   }
