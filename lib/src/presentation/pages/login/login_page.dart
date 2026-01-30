@@ -1,51 +1,68 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:udemy_flutter_delivery/src/presentation/controllers/login_controller.dart';
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
+  LoginPage({super.key});
+
+  LoginController con = Get.put(LoginController());
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+
     return Scaffold(
-      body: Stack( // Capas: Fondo -> Contenido (Scroll)
-        children: [
-          _backgroundCover(context),
-          _content(context),
-        ],
+      body: SizedBox(
+        width: double.infinity,
+        height: double.infinity,
+        child: Stack(
+          children: [_backgroundCover(context, size), _content(context, size)],
+        ),
       ),
     );
   }
 
-  // 1. Fondo Amarillo (40% superior)
-  Widget _backgroundCover(BuildContext context) {
+  // 1. Fondo Amarillo (60% superior)
+  Widget _backgroundCover(BuildContext context, Size size) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.60,
+      height: size.height * 0.40,
       color: Colors.amber,
     );
   }
 
-  // 2. Contenido con Scroll
-  Widget _content(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          _imageBanner(),
-          _textAppName(),
-          _boxForm(context),
-          _textDontHaveAccount(),
-        ],
+  // 2. Contenido con Scroll y SafeArea
+  Widget _content(BuildContext context, Size size) {
+    return SafeArea(
+      child: SizedBox(
+        width: double.infinity,
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              _imageBanner(size),
+              _textAppName(),
+              _boxForm(context, size),
+              SizedBox(height: size.height * 0.05), // Espacio dinámico al final
+              _textDontHaveAccount(context),
+              const SizedBox(height: 20), // Margen extra inferior
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  // Cabecera: Imagen
-  Widget _imageBanner() {
+  // Cabecera: Imagen adaptativa (22% de la altura de la pantalla aprox)
+  Widget _imageBanner(Size size) {
     return Container(
-      margin: const EdgeInsets.only(top: 100, bottom: 15),
+      margin: EdgeInsets.only(
+        top: size.height * 0.08,
+        bottom: size.height * 0.02,
+      ),
       child: Image.asset(
         'assets/img/delivery.png',
-        width: 200,
-        height: 200,
+        width: size.width * 0.25,
+        height: size.width * 0.25,
       ),
     );
   }
@@ -62,47 +79,48 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  // Tarjeta Central
-  Widget _boxForm(BuildContext context) {
+  // Tarjeta Central Adaptativa
+  Widget _boxForm(BuildContext context, Size size) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 40, vertical: 40),
+      margin: EdgeInsets.symmetric(
+        horizontal: size.width * 0.1,
+        vertical: size.height * 0.04,
+      ),
       padding: const EdgeInsets.symmetric(vertical: 30),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(30), // Bordes redondeados
+        borderRadius: BorderRadius.circular(30),
         boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 15,
             offset: Offset(0, 5),
-          )
+          ),
         ],
       ),
       child: Column(
         children: [
           const Text(
             'INGRESA ESTA INFORMACION',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 30),
-          _textFieldEmail(),
-          _textFieldPassword(),
-          _buttonLogin(),
+          _textFieldEmail(size),
+          _textFieldPassword(size),
+          _buttonLogin(size),
         ],
       ),
     );
   }
 
-  Widget _textFieldEmail() {
+  Widget _textFieldEmail(Size size) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      child: const TextField(
+      margin: EdgeInsets.symmetric(horizontal: size.width * 0.08, vertical: 10),
+      child: TextField(
+        controller: con.emailController,
         keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: 'Correo electrónico',
           prefixIcon: Icon(Icons.email, color: Colors.amber),
         ),
@@ -110,13 +128,14 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _textFieldPassword() {
+  Widget _textFieldPassword(Size size) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-      child: const TextField(
+      margin: EdgeInsets.symmetric(horizontal: size.width * 0.08, vertical: 10),
+      child: TextField(
+        controller: con.passwordController,
         keyboardType: TextInputType.text,
         obscureText: true,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           hintText: 'Contraseña',
           prefixIcon: Icon(Icons.lock, color: Colors.amber),
         ),
@@ -124,12 +143,12 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _buttonLogin() {
+  Widget _buttonLogin(Size size) {
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 30),
+      margin: EdgeInsets.symmetric(horizontal: size.width * 0.08, vertical: 30),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () => con.login(),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.amber,
           padding: const EdgeInsets.symmetric(vertical: 15),
@@ -146,30 +165,27 @@ class LoginPage extends StatelessWidget {
   }
 
   // Pie: Texto de registro
-  Widget _textDontHaveAccount() {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 40),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text(
-            '¿No tienes cuenta?',
-            style: TextStyle(color: Colors.black, fontSize: 17),
-          ),
-          const SizedBox(width: 7),
-          GestureDetector(
-            onTap: () {},
-            child: const Text(
-              'Regístrate Aquí',
-              style: TextStyle(
-                color: Colors.amber,
-                fontWeight: FontWeight.bold,
-                fontSize: 17,
-              ),
+  Widget _textDontHaveAccount(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          '¿No tienes cuenta?',
+          style: TextStyle(color: Colors.black, fontSize: 17),
+        ),
+        const SizedBox(width: 7),
+        GestureDetector(
+          onTap: () => con.goToRegisterPage(),
+          child: const Text(
+            'Regístrate Aquí',
+            style: TextStyle(
+              color: Colors.amber,
+              fontWeight: FontWeight.bold,
+              fontSize: 17,
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
